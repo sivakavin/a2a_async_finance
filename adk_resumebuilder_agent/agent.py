@@ -30,7 +30,7 @@ def create_resume_builder_agent():
         - Projects
         - Education
         """,
-        model="gemini-2.5-flash-lite",
+        model="gemini-2.5-flash",
     )
 
     runner = Runner(

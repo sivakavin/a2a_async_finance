@@ -19,7 +19,7 @@ def main(host='0.0.0.0',port=8001):
     ## Functionality used to define pushnotification /streaming
     capabilities = AgentCapabilities()
 
-    ## Used to define agent information 
+    ## Used to define agent information
     skill = AgentSkill(
         id = "resume_Builder",
         name = "Resume Builder",
@@ -27,11 +27,14 @@ def main(host='0.0.0.0',port=8001):
         tags = ["resume", "build", "create", "cv"],
         examples=["build resume for agentic developer with all required information"]
                     )
+    # Use localhost in the URL if binding to 0.0.0.0 (since 0.0.0.0 is not valid for client connections)
+    card_host = 'localhost' if host == '0.0.0.0' else host
+
     ## defining agent card
     agend_card = AgentCard(
         name = "Resume Builder Agent",
         description= "Creates professional ATS-friendly resumes from raw user details.",
-        url=f"http://{host}:{port}",
+        url=f"http://{card_host}:{port}",
         version='1.0.0',
         default_input_modes=['text/plain'],
         default_output_modes=['text/plain'],

@@ -21,21 +21,29 @@ class ResumeBuilderAgentExecutor(AgentExecutor):
                                          parts=[types.Part(text=query)])
             session_id = str(uuid.uuid4())
             user_id = str(uuid.uuid4())
-            
+
+            # Create session before running
+            await self.runner.session_service.create_session(
+                session_id=session_id,
+                user_id=user_id,
+                app_name="ResumeBuilderApp"
+            )
+
             async for event in self.runner.run_async(
                 user_id = user_id,
                 session_id = session_id,
                 new_message = user_content
             ):
-                if event.is_final_response() and event.content:
-                    final_text = event.content.parts[0].text
-                    await event_queue.enqueue_event(new_agent_text_message(final_text))
+                if event.content:
+                    final_text = event.content.parts[0].text if event.content.parts else ""
+                    if final_text:
+                        await event_queue.enqueue_event(new_agent_text_message(final_text))
 
-        
+
         except Exception as e:
             await event_queue.enqueue_event(
-               new_agent_text_message(f"❌ Error: {str(e)}")
-    )
+                new_agent_text_message(f"❌ Error: {str(e)}")
+            )
 
     async def cancel(self, context, event_queue):
         return await super().cancel(context, event_queue)
