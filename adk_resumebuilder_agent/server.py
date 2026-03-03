@@ -2,10 +2,20 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from agent import create_agent
 from google.genai import types
+import requests
 
+REGISTRY_URL = "http://localhost:9000/register"
 
 app = FastAPI()
 runner = create_agent()
+
+# def register_with_registry():
+#     agent_info = {
+#         "name" : "ResumeBuilderAgent",
+#         "description": "Creates professional ATS-friendly resumes.",
+#         "endpoint": "http://localhost:8001/rpc",
+#         "skills": ["resume", "build", "create", "cv"]
+#     }
 
 class RequestModel(BaseModel):
     jsonrpc: str

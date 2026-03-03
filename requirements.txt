@@ -7,3 +7,4 @@ langgraph
 openai
 groq
 litellm
+a2a-sdk
