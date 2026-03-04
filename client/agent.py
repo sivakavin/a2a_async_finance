@@ -13,6 +13,12 @@ resume_builder_agent = RemoteA2aAgent(
     agent_card=f"http://localhost:8001/{AGENT_CARD_WELL_KNOWN_PATH}",
 )
 
+resume_review_agent = RemoteA2aAgent(
+    name="resume_reviwer",
+    description="review resume like professional ATS-friendly resumes",
+    agent_card=f"http://localhost:8002/{AGENT_CARD_WELL_KNOWN_PATH}",
+)
+
 # Root client agent
 root_agent = LlmAgent(
     name="ai_assistant",
@@ -24,5 +30,5 @@ If the user asks about resume creation,
 delegate the task to the resume_builder sub-agent.
 Do not answer resume requests directly.
 """,
-    sub_agents=[resume_builder_agent],
+    sub_agents=[resume_builder_agent,resume_review_agent],
 )
