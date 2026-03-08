@@ -49,13 +49,13 @@ def main(host: str = "0.0.0.0", port: int = 8002):
     )
 
     # 6️⃣ Create A2A Server Application
-    app = A2AStarletteApplication(
+    a2a_app = A2AStarletteApplication(
         agent_card=agent_card,
         http_handler=request_handler
     )
 
     # 7️⃣ Start server
-    uvicorn.run(app.build(), host=host, port=port)
+    uvicorn.run(a2a_app.build(), host=host, port=port)
 
 
 if __name__ == "__main__":

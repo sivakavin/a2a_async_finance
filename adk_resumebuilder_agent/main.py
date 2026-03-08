@@ -11,13 +11,16 @@ from a2a.types import (
     AgentCard,
     AgentSkill
 )
+from fastapi import FastAPI
 
 from agent_executor import ResumeBuilderAgentExecutor
 
 def main(host='0.0.0.0',port=8001):
     """ Start Resume builder agent"""
     ## Functionality used to define pushnotification /streaming
-    capabilities = AgentCapabilities()
+    capabilities = AgentCapabilities(
+    streaming=True
+)
 
     ## Used to define agent information
     skill = AgentSkill(
@@ -36,8 +39,8 @@ def main(host='0.0.0.0',port=8001):
         description= "Creates professional ATS-friendly resumes from raw user details.",
         url=f"http://{card_host}:{port}",
         version='1.0.0',
-        default_input_modes=['text/plain'],
-        default_output_modes=['text/plain'],
+        default_input_modes=['text/plain','application/json'],
+        default_output_modes=['text/plain','application/json'],
         capabilities=capabilities,
         skills=[skill,],
     )
@@ -51,7 +54,12 @@ def main(host='0.0.0.0',port=8001):
         agent_card=agend_card,http_handler=request_handler
     )
 
-    uvicorn.run(server.build(),host=host,port=port)
+    ## Enhancing chat feature
+    app = FastAPI()
+    a2a_app = server.build()
+    app.mount("/",a2a_app)
+
+    uvicorn.run(app,host=host,port=port)
 
 if __name__ == "__main__":
     main()

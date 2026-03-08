@@ -1,7 +1,7 @@
 ## Agent Detail
 from agent import create_resume_builder_agent
 from google.genai import types
-## Agemt Executor lib
+## Agent Executor lib
 from a2a.server.events import EventQueue
 from a2a.types import (
     TextPart
